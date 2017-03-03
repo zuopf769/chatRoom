@@ -1,6 +1,6 @@
 # Socket.IO Chat
 
- mishi live for socket.io
+live for socket.io
 
 ## How to use
 
@@ -10,7 +10,7 @@ $ npm install
 $ npm start
 ```
 
-And point your browser to `http://localhost:8086`. Optionally, specify
+And point your browser to `http://localhost:8033`. Optionally, specify
 a port by supplying the `PORT` env variable.
 
 ## Features
