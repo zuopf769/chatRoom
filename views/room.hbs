@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>{{roomID}}</title>
+  <style>
+    #msglog, #messageInput {
+      border: 1px solid #ccc;
+      width: 500px;
+      height: 350px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    #messageInput {
+      height: 80px;
+    }
+    .message {
+      line-height: 22px;
+    }
+    .message .user {
+      padding-right: 5px;
+      padding-left: 5px;
+      color: brown;
+    }
+    .sysMsg {
+      color: #c1bfbf;
+      padding-right: 5px;
+      padding-left: 5px;
+      font-size: 12px;
+    }
+    #users {
+      width: 490px;
+      padding: 0 5px 5px;
+    }
+  </style>
+</head>
+<body>
+  昵称: <span id="userName"></span> <br/>
+  房间: {{roomId}} <br/>
+
+  <div id="msglog">
+
+  </div>
+  <textarea name="message" id="messageInput"></textarea>
+  <br/>
+  按Enter键发送
+  <button id="joinOrLeave">退出房间</button>
+
+  <script src="/js/lib/socket.io.js"></script>
+  <script src="/js/lib/jquery.js"></script>
+  <script src="/js/webim-js/ClassEvent.js"></script>
+  <script src="/js/webim-js/Socket.js"></script>
+  <script src="/js/webim-js/webim.js"></script>
+  <script>
+    window.onload = function() {
+
+      // ----------设置昵称-------------
+      var userName = '';
+      while ($('#userName').text().trim() === '') {
+        userName = prompt("请设置你的昵称","");
+        $('#userName').text(userName);
+      }
+
+      // 创建连接
+      var webim = new WK_IM_JSDK.WebIM('http://localhost:8033', {
+          token: 'token123456',
+          roomId: '{{roomId}}',
+          userName: userName
+      });
+
+      // 监听消息(普通消息和系统消息)
+      webim.bind('message', function (msg) {
+          console.log('message' + msg);
+          createMsg(msg);
+      });
+
+       // 监听系统消息
+      webim.bind('sys', function (sysMsg) {
+        console.log('sys' + sysMsg);
+        var message = '<div class="sysMsg">' + sysMsg.content + '</div>';
+        $('#msglog').append(message);
+      });
+
+      // 错误消息
+      webim.bind('error', function (data) {
+          console.log('error' + data);
+      });
+
+       // 发送消息
+      $('#messageInput').keydown(function (e) {
+        if (e.which === 13) {
+          e.preventDefault();
+          var msg = $(this).val();
+          $(this).val('');
+
+          webim.sendMessage(msg);
+        }
+      });
+
+      // 创建消息
+      function createMsg(msg) {
+          var message = '' +
+              '<div class="message">' +
+              '  <span class="msg">' + msg + '</span>' +
+              '</div>';
+          $('#msglog').append(message);
+          // 滚动条保持最下方
+          $('#msglog').scrollTop($('#msglog')[0].scrollHeight); 
+      }
+
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "socket.io-chat",
+  "version": "0.0.0",
+  "description": "mishi live sever using socket.io",
+  "main": "index.js",
+  "author": "zuopengfei01",
+  "private": true,
+  "license": "BSD",
+  "dependencies": {
+    "express": "4.13.4",
+    "hbs": "^4.0.1",
+    "node-ral": "^0.17.5",
+    "socket.io": "^1.7.2",
+    "underscore": "^1.8.3",
+    "yog-log": "^0.1.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-develop-server": "^0.5.2"
+  }
+}
